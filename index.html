@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="
+https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js
+"></script>
+</head>
+
+<body>
+    <h2 class="heading">Memory Game 🧠</h2>
+
+    <div class="stats">
+        Moves: <span id="moves">0</span>
+        Pairs Found: <span id="pairs">0</span>
+        of 8
+    </div>
+
+    <!-- use classes for css and id for js -->
+    <div class="game-board" id="gameBoard">
+    </div>
+    <button id="resetButton" class="reset-button">Try new game</button>
+
+
+
+    <canvas class="confetti-canvas" id="my-canvas"></canvas>
+    <script src="script.js"></script>
+</body>
+
+</html>
