@@ -2,6 +2,14 @@
 const resetButton = document.querySelector("#resetButton")
 const symbols = ["🍕", "🍷", "🚅", "🌏", "🍁", "😎", "💗", "💥"]
 
+let confettiSettings = { target: 'confetti-canvas' };
+let confetti = new ConfettiGenerator(confettiSettings);
+
+const matchSound = new Audio("./match.wav")
+const winSound = new Audio("./win.wav")
+
+
+
 let cards = []
 let flippedCards = [];
 let matchedPairs = 0;
@@ -63,7 +71,11 @@ function flipCard() {
             // look for game completion or last pair
             if (matchedPairs === symbols.length) {
                 console.log("congratulations! you won", moves + " " + "moves taken")
-                renderConfetti()
+                confetti.render()
+                showMessage()
+                winSound.play()
+            } else {
+                matchSound.play()
             }
         } else {
             setTimeout(() => {
@@ -73,7 +85,7 @@ function flipCard() {
                 });
                 flippedCards = [];
                 canFlip = true;
-            }, 1000)
+            }, 700)
         }
     }
 }
@@ -84,31 +96,19 @@ function updateStats() {
 }
 
 function showMessage() {
-    const div = document.createElement("div")
-    div.classList.add("congratulation-message")
-    div.textContent = "congratulations! you won", moves + " " + "moves taken"
-    document.querySelector('body').appendChild(div)
-}
+    const template = document.querySelector('template')
+    const messageElement = template.content.cloneNode(true)
+    const msg = `Congratulation! you've won in ${moves} moves`
+    messageElement.querySelector('.message').textContent = msg
+    document.body.appendChild(messageElement)
 
-function renderConfetti() {
-    var confettiSettings = { target: 'my-canvas' };
-    var confetti = new ConfettiGenerator(confettiSettings);
-    confetti.render();
+    const playAgainBtn = document.querySelector('.play-again-btn')
+    playAgainBtn.addEventListener('click', () => resetButton.click())
 }
-
-function clearConfetti() {
-    var confettiSettings = { target: 'my-canvas' };
-    var confetti = new ConfettiGenerator(confettiSettings);
-    confetti.clear();
-}
-
 
 
 // reset the game
 resetButton.addEventListener("click", () => {
-
-    showMessage()
-
     cards = []
     flippedCards = [];
     matchedPairs = 0;
@@ -121,12 +121,15 @@ resetButton.addEventListener("click", () => {
         flippedCard.forEach(card => {
             card.classList.remove("flipped")
             card.textContent = '';
-            clearConfetti()
+            confetti.clear()
         })
     }
 
-    const message = document.querySelector(".congratulation-message")
-    if (message) {
-        message.remove()
+    const messageContainer = document.querySelector('.message__container')
+    if (messageContainer) {
+        messageContainer.remove()
     }
+
+    winSound.pause()
+    winSound.currentTime = 0
 })

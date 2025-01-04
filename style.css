@@ -4,6 +4,10 @@
     margin: 0;
 }
 
+:root {
+    --accent-color: #ff6dc6;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
@@ -22,7 +26,6 @@ body {
 .game-board {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    /* aspect-ratio: 1 / 1; */
     gap: 0.5rem;
     width: min(500px, 100% - 4rem);
     margin-inline: auto;
@@ -33,13 +36,13 @@ body {
         cursor: pointer;
         transition: background-color .3s ease-in;
         border-radius: 10px;
-        font-size: 4em;
-        width: 120px;
-        height: 120px;
         display: grid;
         place-content: center;
         transform-style: preserve-3d;
         transition: transform 0.3s ease;
+        width: 100%;
+        aspect-ratio: 1;
+        font-size: min(4em, 10vw);
         
 
         &:hover {
@@ -50,13 +53,14 @@ body {
     .card.flipped {
         transform: rotateY(180deg);
         background-color: #fff;
+        cursor: not-allowed;
     }
 
 }
 
 .reset-button {
     all: unset;
-    background-color: red;
+    background-color: var(--accent-color);
     color: white;
     border-radius: 5px;
     padding: 0.5rem 1rem;
@@ -72,18 +76,43 @@ body {
 
 .confetti-canvas {
     position: fixed;
+    z-index: 2;
     inset: 0;
     width: 100vw;
     height: 100vh;
     pointer-events: none;
 }
 
-.congratulation-message {
+.message__container {
     position: fixed;
     inset: 0;
     display: grid;
+    background-color: #00000080;
     place-content: center;
-    pointer-events: none;
-    font-size: 48px;
-    font-weight: 500;
+    gap: 0.5rem;
+
+    .message {
+        font-size: clamp(1rem, calc(2vw + 1rem), 4rem);
+        font-weight: 500;
+    }
+
+    .play-again-btn {
+        all: unset;
+        background-color: var(--accent-color);
+        padding: 0.5rem 1rem;
+        width: fit-content;
+        text-transform: capitalize;
+        font-size: 12px;
+        font-weight: 500;
+        margin-inline: auto;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: scale .2s ease-in-out;
+        &:hover {
+            scale: 1.05;
+        }
+        &:active {
+            scale: 1;
+        }
+    }
 }
